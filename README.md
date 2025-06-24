@@ -1,13 +1,19 @@
 # Mindcraft 
 A framework for cognitive evolution.
 
+Predominantly used for evolutionary reinforcement learning, especially with unconventional neural network architectures.
+
+> **_NOTE:_**  The `mindcraft` framework is under active development and the API might change in the future. The framework is not fully documented, but we are working on it.
+
+> **_WARNING:_**  The `m̀incraft.io.Repr` class is used to represent native classes as yml files, which might also use `eval` to evaluate the class.
+
+
 ## Project Structure
 - The entire `mindcraft` framework implementation is located in the [mindcraft](mindcraft) folder.
 - General code examples are located in the [examples](examples) directory.
 - Examples, such as solving the [_cart-pole_](examples/agents/gym/classic_control/) environment with `mindcraft` are 
   located in the [examples/agents](examples/agents) directory.
 - (Unit)tests are implemented in the [tests](tests) folder.
-
 
 ## Install
 We install `mindcraft` in a dedicated *virtual environment* usind [Anaconda](https://anaconda.com).
