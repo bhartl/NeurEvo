@@ -1,5 +1,5 @@
 # Mindcraft 
-A framework for cognitive evolution.
+A Framework for Cognitive NeuroEvolution
 
 Predominantly used for evolutionary reinforcement learning, especially with unconventional neural network architectures.
 
@@ -16,7 +16,7 @@ Predominantly used for evolutionary reinforcement learning, especially with unco
 - (Unit)tests are implemented in the [tests](tests) folder.
 
 ## Install
-We install `mindcraft` in a dedicated *virtual environment* usind [Anaconda](https://anaconda.com).
+We install `mindcraft` in a dedicated *virtual environment* using [Anaconda](https://anaconda.com).
 All commands are executed in the project root directory `$PROJECT_ROOT`, which we set as follows
 ```bash
 export PROJECT_ROOT=~/Projects/NeurEvo
@@ -26,7 +26,7 @@ If you are working within the `mindcraft` project root directory, you can also u
 
 ### Virtual Environment
 
-The `mindcraft` package should be executed in dedicated *virtual environments (venv)* to not compromise the system's *Python* installation.
+The `mindcraft` package should be executed in dedicated *virtual environments (venv)* to avoid interference with the system's *Python* installation.
 With *Anaconda*, a corresponding *mindcraft venv* can be generated as follows
 ```bash
 conda create -n mindcraft python=3.8
@@ -83,7 +83,7 @@ From [here](https://researchcomputing.princeton.edu/support/knowledge-base/mpi4p
 [`mpi4py`](https://mpi4py.readthedocs.io/en/stable/) 
 provides a Python interface to MPI or the _Message-Passing Interface_. 
 It is useful for parallelizing Python scripts. 
-Also be aware of multiprocessing, dask and Slurm job arrays.
+Also, be aware of multiprocessing, dask and Slurm job arrays.
 
 On the cluster, the `mpich` package could either be installed in a virtual environment via `conda`
 
@@ -108,7 +108,7 @@ and, **subsequently**, **`mpi4py`** can be **installed** via
 pip install mpi4py --no-cache-dir
 ```
 
-To **test** the `mpi4py` installation, a simle test script is provided in [tests/test_mpi4py.py](tests/test_mpi4py.py):
+To **test** the `mpi4py` installation, a simple test script is provided in [tests/test_mpi4py.py](tests/test_mpi4py.py):
 a loop of 4 iterations is executed, each prints the rank and the batch `(i/4)` of the current data, then waits for 2 seconds.
 To run is **serially**, use
 ```bash
@@ -130,7 +130,7 @@ conda install -c conda-forge libstdcxx-ng
 ```
 
 ### Dependencies for Examples and Jupyter Notebooks
-To  run the examples, analysis tools and Jupyter notebooks, the `examples` packages listed in the `project.optional-dependencies` of the [pyproject.toml](pyproject.toml) file are required.
+To  run the examples, analysis tools, and Jupyter notebooks, the `examples` packages listed in the `project.optional-dependencies` of the [pyproject.toml](pyproject.toml) file are required.
 These can be installed via
 ```bash
 pip install -e $PROJECT_ROOT[examples]
@@ -178,7 +178,7 @@ If you use `mindcraft` in your research, please cite it as follows:
 ```bibtex
 @misc{hartl2025mindcraft,
   author = {Hartl, Benedikt},
-  title = {Mindcraft: A framework for cognitive evolution},
+  title = {Mindcraft: A Framework for Cognitive NeuroEvolution},
   year = {2025},
   publisher = {GitHub},
   journal = {GitHub repository},

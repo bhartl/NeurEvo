@@ -15,7 +15,7 @@ License does not grant to you, the right to copy, modify, reproduce, distribute,
 display, perform, or otherwise exploit the Software for any commercial purpose.
 You may not use the Software to provide any product or service to any third 
 party, whether for a fee or any other consideration, including without limitation
-any hosting, software as a service, consulting, or support services, and may 
+any hosting, software as a s/dataervice, consulting, or support services, and may 
 not otherwise use the Software to develop, provide, maintain, or support any 
 commercial product or service whose values derives, in whole or in part, from
 the Software or its features or functions.  The Software is intended solely to
@@ -241,3 +241,5 @@ License: Apache 2.0
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   Don't do evil ...
