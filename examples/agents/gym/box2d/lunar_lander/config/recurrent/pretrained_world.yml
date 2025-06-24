@@ -1,0 +1,5 @@
+env: examples/agents/gym/box2d/lunar_lander/config/recurrent/env.yml
+agent: data/examples/agents/gym/box2d/lunar_lander/models/recurrent/evolved-agent.yml
+n_episodes: 5
+verbose: False
+render: False

@@ -1,0 +1,6 @@
+env: examples/agents/gym/classic_control/cart_pole/config/feed_forward/env.yml
+agent: data/examples/agents/gym/classic_control/cart_pole/models/feed_forward/evolved-agent.yml
+n_episodes: 10
+max_steps: 1000
+verbose: False
+render: False

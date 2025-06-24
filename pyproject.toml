@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools >= 61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "mindcraft"
+version = "0.1.0"
+authors = [
+    { name="Ben Hartl", email="hartl.bene.software@gmail.com" },
+]
+description = "Mindcraft - A framework for cognitive evolution"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Artificial Life",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+dependencies = [
+    #IO
+    "argh",
+    "PyYAML",
+    "pynput",
+
+    # numerics
+    "matplotlib",
+    "numpy",
+    "scipy",
+    "pandas",
+    "numba",
+    "scikit-learn",
+    "scikit-image",
+
+    # ML
+    "torch >= 2.0",
+    "torchvision",
+
+    # RL
+    "gym",
+    "box2d >= 2.3.2",
+    "box2d-py >= 2.3.8",
+    "pygame",
+    "pyglet",
+    "stable-baselines3",
+
+    # neat
+    "neat-python~=0.92",
+    "networkx",
+    "pydot",
+
+    # estool
+    "cma~=3.3.0",
+
+    # opencv-python~=4.7.0.68
+    "h5py",
+]
+
+
+[project.optional-dependencies]
+acc = [
+    "mpi4py >= 3.1.4",
+    "workload@git+https://github.com/bhartl/async-workload-handler#egg=main",
+    "swig",
+]
+examples = [
+    "jupyter ~= 1.0",
+    "seaborn >= 0.13.0",
+    "ipywidgets ~= 8.1.1",
+]
+pybullet = [
+    "pybullet ~= 3.2.5"
+]
+
+
+[project.urls]
+Homepage = "https://github.com/bhartl/neurevo"
+
+
+[tool.setuptools]
+py-modules = ["mindcraft"]

@@ -1,0 +1,9 @@
+world:
+  env: examples/agents/gym/box2d/lunar_lander/config/feed_forward/env.yml
+  agent: data/examples/agents/gym/box2d/lunar_lander/models/feed_forward/evolved-agent.yml
+  n_episodes: 5
+  verbose: True
+  render: True
+  delay: 0.001
+rollout_kwargs:
+  verbose: True

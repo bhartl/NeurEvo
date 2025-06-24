@@ -1,0 +1,5 @@
+env: examples/agents/gym/box2d/lunar_lander/config/feed_forward/env.yml
+agent: examples/agents/gym/box2d/lunar_lander/config/feed_forward/agent.yml
+n_episodes: 5
+verbose: False
+render: False
