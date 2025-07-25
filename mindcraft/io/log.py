@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 import h5py
 import os
 import ast
@@ -304,6 +303,7 @@ def crawl_logfiles_dataframe(directory, verbose=False, postfix=""):
     if verbose:
         [print("-", log) for log in logfiles]
 
+    import pandas as pd
     df = pd.DataFrame([{k: v for k, v in key_value_pairs(file, postfix=postfix)} for file in logfiles])
     df["logfile"] = logfiles
 

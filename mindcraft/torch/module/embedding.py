@@ -289,15 +289,26 @@ class SensoryEmbedding(Embedding):
             return self.sensor(x, *args)
 
         x = self.projection(x, *args)
+        is_2d = len(x.shape) == 4  # (BS, FEATURES, X, Y) or (BS, X, Y, FEATURES)
         if self.sensor is not None:
             shape = None
             is_sequence = getattr(self.sensor, "is_sequence_module", False)
             if is_sequence:
-                shape = x.shape[:-1]
-                x = x.reshape(-1, x.shape[-1])
+                if not is_2d:
+                    shape = x.shape[:-1]
+                    x = x.reshape(-1, x.shape[-1])
+                else:  # (BS, FEATURES, X, Y)
+                    shape = x.shape[:-1]
+                    if not self.projection.flatten:
+                        x = x.transpose(1, 2).transpose(2, 3)  # (BS, X, Y, FEATURES)
+                        shape = x.shape[:-1]
+                        x = x.reshape(-1, x.shape[-1])  # (BS*X*Y, FEATURES)
+
             x = self.sensor(x)
             if is_sequence:
                 x = x.reshape(*shape, -1)
+                if not self.projection.flatten:
+                    x = x.transpose(2, 3).transpose(1, 2)  # (BS, FEATURES, X, Y)
         return x
 
     def reset(self):

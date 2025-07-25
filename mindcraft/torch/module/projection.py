@@ -80,15 +80,16 @@ class PatchP(LinearP):
     (c) B. Hartl 2021
     """
 
-    REPR_FIELDS = ("kernel_size", "stride", "img_size", "padding", "padding_mode",
+    REPR_FIELDS = ("kernel_size", "stride", "img_size", "padding", "padding_mode", "flatten",
                    *LinearP.REPR_FIELDS)
 
     def __init__(self, kernel_size=8, stride=None, input_size=3, projection_size=2, img_size=None,
-                 padding=None, padding_mode='zeros', **patchwork_kwargs):
+                 padding=None, padding_mode='zeros', flatten=True, **patchwork_kwargs):
         self.kernel_size = kernel_size if hasattr(kernel_size, '__iter__') else [kernel_size, kernel_size]
-        self.stride = stride or kernel_size
-        self.padding = padding or kernel_size
+        self.stride = stride or 1
+        self.padding = padding or 0
         self.padding_mode = padding_mode
+        self.flatten = flatten
 
         self.img_size = None
         self.shape_patches = None
@@ -112,8 +113,9 @@ class PatchP(LinearP):
         # set img_size property (and evaluate num_patches, shape_patches)
         x = self.resize(x)                         # shape: B, C, Nx, Ny
         x = LinearP.forward(self, x, *args)  #        B, Embd, Nx, Ny
-        x = x.flatten(-2)                          #        B, Embd, Nx times Ny
-        x = x.transpose(1, 2)  # SEQUENCE, BATCH, FEATURES
+        if self.flatten:
+            x = x.flatten(-2)                          #        B, Embd, Nx times Ny
+            x = x.transpose(1, 2)  # SEQUENCE, BATCH, FEATURES
         return x
 
     def set_size(self, img_size):
@@ -136,7 +138,9 @@ class PatchP(LinearP):
             self.shape_patches = tuple([int(sp) for sp in self.shape_patches])
             self.num_patches = int(product(self.shape_patches))
 
-        self.img_size = list(img_size)
+            self.img_size = list(img_size)
+
+        self.img_size = img_size
 
     def resize(self, x):
         if self.img_size is None:
