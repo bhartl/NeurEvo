@@ -1235,3 +1235,159 @@ class MCMC:
 
     def result(self):  # return best params so far, along with historically best reward, curr reward, sigma
         return (self.best_solution, self.best_reward, self.curr_best_reward, self.sigma)
+
+
+class DiscreteGA:
+    '''Simple Discrete Genetic Algorithm.'''
+
+    def __init__(self,
+                 num_params,
+                 num_letters=2,
+                 mutation_rate=0.5,
+                 mutation_decay=0.9999,
+                 crossover_rate=0.5,
+                 popsize=256,
+                 elite_ratio=0.1,
+                 forget_best=False,
+                 weight_decay=0.0,
+                 reg='l2',
+                 x0=None,
+                 ):
+        """ Constructs a simple genetic algorithm instance.
+
+        :param num_params: number of model parameters.
+        :param num_letters: number of letters in the alphabet, defaults to 2 (binary).
+        :param mutation_rate: probability of mutation, defaults to 0.1.
+        :param mutation_decay: decay rate for the mutation rate, defaults to 0.99.
+        :param crossover_rate: probability of crossover, defaults to 0.5.
+        :param popsize: population size.
+        :param elite_ratio: percentage of the elites.
+        :param forget_best: forget the historical best elites.
+        :param weight_decay: weight decay coefficient.
+        :param reg: Choice between 'l2' or 'l1' norm for weight decay regularization.
+        :param x0: initial guess for a good solution, defaults to None (initialize via np.zeros(num_parameters)).
+        """
+
+        self.num_params = num_params
+        self.num_letters = num_letters
+        self.mutation_rate = mutation_rate
+        self.mutation_decay = mutation_decay
+        self.crossover_rate = crossover_rate
+
+        self.popsize = popsize
+
+        self.elite_ratio = elite_ratio
+        self.elite_popsize = int(np.ceil(self.popsize * self.elite_ratio))
+
+        # ADDING option to start from prior solution
+        if x0 is None:
+            x0 = np.random.randint(0, self.num_letters, size=(self.elite_popsize, self.num_params))
+        else:
+            x0 = np.asarray(x0, dtype=np.int32)
+
+        if x0.ndim == 1:
+            self.elite_params = np.stack([x0] * self.elite_popsize)
+
+        elif x0.ndim == 2:
+            if len(x0) < self.elite_popsize:
+                self.elite_params = np.stack([x0] * self.elite_popsize)[:self.elite_popsize]
+            else:
+                self.elite_params = x0[:self.elite_popsize]
+
+        else:
+            raise ValueError(f"Only 1d or 2d shapes allowed for `x0`, got {np.shape(x0)}d.")
+
+        # self.elite_params = np.zeros((self.elite_popsize, self.num_params))
+        self.best_param = np.copy(self.elite_params[0])  # np.zeros(self.num_params)
+
+        self.elite_rewards = np.zeros(self.elite_popsize)
+        self.best_reward = 0
+        self.first_iteration = True
+        self.forget_best = forget_best
+        self.weight_decay = weight_decay
+        self.reg = reg
+
+    def ask(self):
+        '''returns a list of parameters'''
+        solutions = []
+
+        def mate(a, b):
+            c = np.copy(a)
+            idx = np.where(np.random.rand((c.size)) > 0.5)
+            c[idx] = b[idx]
+            return c
+
+        def mutate(x):
+            m = np.random.rand(*x.shape) < self.mutation_rate
+            x[m] = np.random.randint(0, self.num_letters, size=np.sum(m))
+            return x
+
+        elite_range = range(self.elite_popsize)
+        for i in range(self.popsize):
+            idx_a = np.random.choice(elite_range)
+
+            if np.random.rand() < self.crossover_rate:
+                idx_b = np.random.choice(elite_range)
+                child_params = mate(self.elite_params[idx_a], self.elite_params[idx_b])
+
+            else:
+                child_params = np.copy(self.elite_params[idx_a])
+
+            if np.random.rand() < self.mutation_rate:
+                child_params = mutate(child_params)
+
+            solutions.append(child_params)
+
+        solutions = np.array(solutions)
+        self.solutions = solutions
+
+        return solutions
+
+    def tell(self, reward_table_result):
+        # input must be a numpy float array
+        assert (len(reward_table_result) == self.popsize), "Inconsistent reward_table size reported."
+
+        reward_table = np.array(reward_table_result)
+
+        if self.weight_decay > 0:
+            reg = compute_weight_decay(self.weight_decay, self.solutions, reg=self.reg)
+            reward_table += reg
+
+        if self.forget_best or self.first_iteration:
+            reward = reward_table
+            solution = self.solutions
+        else:
+            reward = np.concatenate([reward_table, self.elite_rewards])
+            solution = np.concatenate([self.solutions, self.elite_params])
+
+        idx = np.argsort(reward)[::-1][0:self.elite_popsize]
+
+        self.elite_rewards = reward[idx]
+        self.elite_params = solution[idx]
+
+        self.curr_best_reward = self.elite_rewards[0]
+        self.sigma = self.elite_rewards.std()
+
+        if self.first_iteration or (self.curr_best_reward > self.best_reward):
+            self.best_reward = self.elite_rewards[0]
+            self.best_param = np.copy(self.elite_params[0])
+
+        self.first_iteration = False
+
+        if self.mutation_rate > 0:
+            self.mutation_rate *= self.mutation_decay
+
+    def current_param(self):
+        return self.elite_params[0]
+
+    def set_mu(self, mu):
+        pass
+
+    def best_param(self):
+        return self.best_param
+
+    def flush(self, solutions):
+        self.elite_params = solutions
+
+    def result(self):  # return best params so far, along with historically best reward, curr reward, sigma
+        return self.best_param, self.best_reward, self.curr_best_reward, self.sigma
