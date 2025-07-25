@@ -301,7 +301,7 @@ class Agent(Log, Repr):
             return action
 
         if action is None:
-            action = self.default_action
+            action = self.get_default_action()
 
         is_multiagent = len(action.shape) > 1
         if not self.sampling_scale:  # 0 or None
@@ -321,11 +321,14 @@ class Agent(Log, Repr):
                     self._sampling_count = np.full((len(forward_action),), fill_value=self._sampling_count)
 
         if isinstance(forward_action, bool) and not forward_action:
-            action[..., :] = self.default_action
+            action[..., :] = self.get_default_action()
             self._sampling_count = 0
 
         elif is_multiagent:
-            action[~forward_action] = self.default_action[None, ...]
+            try:
+                action[~forward_action] = self.get_default_action()[None, ...]
+            except (IndexError, TypeError):
+                action[~forward_action] = self.get_default_action()
             self._sampling_count[forward_action] = 0
 
         self._sampling_count += 1
