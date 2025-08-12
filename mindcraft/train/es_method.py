@@ -10,6 +10,7 @@ from typing import Optional, Union
 import h5py
 import ast
 import copy
+from mindcraft.torch.util import tensor_to_numpy
 
 
 class EvolutionaryStrategy(Compose):
@@ -436,6 +437,7 @@ class EvolutionaryStrategy(Compose):
                         diversity_msg = ""
                         if self.diversity_metric == "cdist":
                             params = agent_parameters
+                            params = tensor_to_numpy(params) if isinstance(params, torch.Tensor) else params
                             diversity = [np.linalg.norm(params[i] - params[j]) for i in range(len(params)) for j in range(i + 1, len(params))]
                             diversity_mean = np.mean(diversity)
                             diversity_std = np.std(diversity)
