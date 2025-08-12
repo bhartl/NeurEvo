@@ -1,8 +1,7 @@
-from torch.nn import Identity, Linear, Conv2d
+from torch.nn import Identity, Linear, Conv2d, Sequential
 from mindcraft.torch.util import get_conv2d_output_size
 from numpy import array_equal, asarray, product, ndarray, stack
 from numpy import arange as np_arange
-from numpy import product as np_product
 from typing import Union, Optional
 from mindcraft.torch.activation import get_activation_function
 from mindcraft.torch.module import Patchwork
@@ -29,8 +28,8 @@ class Projection(Patchwork):
         Patchwork.__init__(self, **patchwork_kwargs)
 
     def _build(self):
-        self._build_projection()
         self.activation = get_activation_function(self.activation)
+        self._build_projection()
 
     def _build_projection(self):
         self.network = Identity()
@@ -80,11 +79,25 @@ class PatchP(LinearP):
     (c) B. Hartl 2021
     """
 
-    REPR_FIELDS = ("kernel_size", "stride", "img_size", "padding", "padding_mode", "flatten",
+    REPR_FIELDS = ("kernel_size", "stride", "img_size", "padding", "padding_mode", "flatten", "depth_wise",
                    *LinearP.REPR_FIELDS)
 
     def __init__(self, kernel_size=8, stride=None, input_size=3, projection_size=2, img_size=None,
-                 padding=None, padding_mode='zeros', flatten=True, **patchwork_kwargs):
+                 padding=None, padding_mode='zeros', flatten=True, depth_wise=False, **patchwork_kwargs):
+        """ Constructs a Patch Projection instance
+
+        :param kernel_size: the size of the patches, defaults to 8.
+        :param stride: the stride of the convolution, defaults to kernel_size.
+        :param input_size: the number of input channels (`shape[-1]`), defaults to 3.
+        :param projection_size: The projection size, i.e., the output-size of the module, defaults to 2.
+        :param img_size: the size of the input image, defaults to None (i.e., will be set during the first forward pass).
+        :param padding: the padding of the convolution, defaults to 0.
+        :param padding_mode: the padding mode of the convolution, defaults to 'zeros'.
+        :param flatten: whether to flatten the output features, defaults to True.
+        :param depth_wise: whether to use depth-wise convolution, defaults to False. If integer is used,
+                           it will be used as multiplier for the input_size (e.g., 2 for 2x depth-wise convolution).
+        :param patchwork_kwargs: additional keyword arguments for the Patchwork base class.
+        """
         self.kernel_size = kernel_size if hasattr(kernel_size, '__iter__') else [kernel_size, kernel_size]
         self.stride = stride or 1
         self.padding = padding or 0
@@ -95,24 +108,44 @@ class PatchP(LinearP):
         self.shape_patches = None
         self.num_patches = None
         self.set_size(img_size)
+        self.depth_wise = depth_wise
+        self.pointwise = None
         patchwork_kwargs["flatten_features"] = patchwork_kwargs.get("flatten_features", False)
         LinearP.__init__(self, input_size=input_size, projection_size=projection_size, **patchwork_kwargs)
 
     def _build_projection(self):
-        self.network = Conv2d(self.input_size,
-                              self.projection_size,
-                              kernel_size=self.kernel_size,
-                              stride=self.stride,
-                              padding=self.padding,
-                              padding_mode=self.padding_mode,
-                              bias=self.bias,
-                              dilation=1,
-                              )
+        dw_out = (self.input_size * self.depth_wise) if self.depth_wise else self.projection_size
+        conv2d = Conv2d(self.input_size,
+                        dw_out,
+                        kernel_size=self.kernel_size,
+                        stride=self.stride,
+                        padding=self.padding,
+                        padding_mode=self.padding_mode,
+                        bias=self.bias,
+                        dilation=1,
+                        groups=1 if not self.depth_wise else self.input_size,
+                        )
+
+        self.network = conv2d
+
+        if self.depth_wise:
+            # pointwise 1x1 to projection_size
+            pw = Conv2d(
+                in_channels=dw_out,
+                out_channels=self.projection_size,
+                kernel_size=1,
+                bias=True
+            )
+
+            self.pointwise = pw
 
     def forward(self, x, *args):
         # set img_size property (and evaluate num_patches, shape_patches)
         x = self.resize(x)                         # shape: B, C, Nx, Ny
         x = LinearP.forward(self, x, *args)  #        B, Embd, Nx, Ny
+        if self.depth_wise:
+            x = self.pointwise(x)
+
         if self.flatten:
             x = x.flatten(-2)                          #        B, Embd, Nx times Ny
             x = x.transpose(1, 2)  # SEQUENCE, BATCH, FEATURES
