@@ -1391,3 +1391,320 @@ class DiscreteGA:
 
     def result(self):  # return best params so far, along with historically best reward, curr reward, sigma
         return self.best_param, self.best_reward, self.curr_best_reward, self.sigma
+
+class CEM:
+    """Cross-Entropy Method (CEM) optimizer.
+       - keeps a Gaussian over params: N(mu, diag(sigma^2))
+       - samples a population, evaluates rewards
+       - updates (mu, sigma) from top-k elites
+    """
+
+    def __init__(self,
+                 num_params,
+                 popsize=128,
+                 elite_ratio=0.2,
+                 sigma_init=0.2,
+                 sigma_min=1e-3,
+                 sigma_decay=1.0,
+                 weight_decay=0.01,
+                 reg='l2',
+                 x0=None):
+        self.num_params   = num_params
+        self.popsize      = int(popsize)
+        self.elite_ratio   = float(elite_ratio)
+        self.elite_k      = max(2, int(np.ceil(self.popsize * self.elite_ratio)))
+
+        self.sigma_init   = float(sigma_init)
+        self.sigma_min    = float(sigma_min)
+        self.sigma_decay  = float(sigma_decay)  # 1.0 = no decay
+
+        self.weight_decay = float(weight_decay)
+        self.reg          = reg
+
+        # mean & std
+        self.mu    = np.zeros(self.num_params, dtype=np.float32) if x0 is None else np.asarray(x0, dtype=np.float32)
+        self.sigma = np.full(self.num_params, self.sigma_init, dtype=np.float32)
+
+        # buffers
+        self.solutions   = None
+        self.epsilon     = None
+
+        # tracking
+        self.curr_best_reward = -np.inf
+        self.curr_best_mu     = self.mu.copy()
+        self.best_reward      = -np.inf
+        self.best_mu          = self.mu.copy()
+
+    def rms_stdev(self):
+        return float(np.sqrt((self.sigma * self.sigma).mean()))
+
+    def ask(self):
+        """Sample a population of parameter vectors."""
+        self.epsilon = np.random.randn(self.popsize, self.num_params).astype(np.float32)
+        self.solutions = self.mu.reshape(1, -1) + self.epsilon * self.sigma.reshape(1, -1)
+        return self.solutions
+
+    def tell(self, reward_table_result):
+        """Update distribution from rewards of the sampled population."""
+        assert len(reward_table_result) == self.popsize, "Inconsistent reward_table size reported."
+        reward = np.asarray(reward_table_result, dtype=np.float32)
+
+        # optional L1/L2 regularization toward zero
+        if self.weight_decay > 0:
+            reg_term = compute_weight_decay(self.weight_decay, self.solutions, reg=self.reg)
+            reward = reward + reg_term.astype(np.float32)
+
+        # elites by reward (maximize)
+        elite_idx = np.argsort(reward)[::-1][:self.elite_k]
+        elites    = self.solutions[elite_idx]
+
+        # track current / historical best
+        self.curr_best_reward = float(reward[elite_idx[0]])
+        self.curr_best_mu     = elites[0].copy()
+        if self.curr_best_reward > self.best_reward:
+            self.best_reward = self.curr_best_reward
+            self.best_mu     = self.curr_best_mu.copy()
+
+        # CEM update: fit mean/std to elites
+        new_mu    = elites.mean(axis=0)
+        new_sigma = elites.std(axis=0)
+
+        # floor + optional global decay
+        new_sigma = np.maximum(new_sigma, self.sigma_min)
+        if self.sigma_decay != 1.0:
+            new_sigma = np.maximum(new_sigma * self.sigma_decay, self.sigma_min)
+
+        self.mu    = new_mu.astype(np.float32)
+        self.sigma = new_sigma.astype(np.float32)
+
+    def current_param(self):
+        """Return current distribution mean (often a good candidate)."""
+        return self.mu
+
+    def set_mu(self, mu):
+        self.mu = np.asarray(mu, dtype=np.float32)
+
+    def best_param(self):
+        """Return best evaluated solution so far."""
+        return self.best_mu
+
+    def flush(self, solutions):
+        """Optionally replace current population (kept for API parity)."""
+        self.solutions = np.asarray(solutions, dtype=np.float32)
+
+    def result(self):
+        """Return (best_params, best_reward, curr_best_reward, rms_sigma)."""
+        return (self.best_mu, self.best_reward, self.curr_best_reward, self.rms_stdev())
+
+
+class GMMCEM:
+    """Cross-Entropy Method with a Mixture of Diagonal Gaussians.
+
+    API mirrors other solvers:
+      - ask() -> (popsize, num_params) solutions
+      - tell(reward_table_result) -> updates mixture from elites
+      - current_param(), best_param(), result(), rms_stdev()
+
+    Notes
+    -----
+    - Uses hard-EM (k-means style) on elites to fit K components quickly.
+    - Diagonal covariances for speed/stability (works well for ES).
+    - If elite_count < K, we reduce K for that iteration.
+    """
+
+    def __init__(self,
+                 num_params,
+                 popsize=256,
+                 elite_ratio=0.2,
+                 num_components=3,
+                 sigma_init=0.2,
+                 sigma_min=1e-3,
+                 sigma_decay=1.0,      # 1.0 means no decay
+                 weight_decay=0.0,
+                 reg='l2',
+                 x0=None,
+                 seed=None,
+                 kmeans_iters=5):
+        self.num_params   = int(num_params)
+        self.popsize      = int(popsize)
+        self.elite_ratio  = float(elite_ratio)
+        self.K            = int(max(1, num_components))
+        self.sigma_init   = float(sigma_init)
+        self.sigma_min    = float(sigma_min)
+        self.sigma_decay  = float(sigma_decay)
+        self.weight_decay = float(weight_decay)
+        self.reg          = reg
+        self.kmeans_iters = int(max(1, kmeans_iters))
+
+        self.rng = np.random.RandomState(seed)
+
+        # Initialize mixture: uniform weights, separated means, diagonal std
+        self.means  = np.zeros((self.K, self.num_params), dtype=np.float32)
+        if x0 is None:
+            # small random spread
+            self.means += self.rng.randn(self.K, self.num_params).astype(np.float32) * (0.1 * self.sigma_init)
+        else:
+            base = np.asarray(x0, dtype=np.float32).reshape(1, -1)
+            self.means = np.repeat(base, self.K, axis=0)
+            self.means += self.rng.randn(self.K, self.num_params).astype(np.float32) * (0.1 * self.sigma_init)
+
+        self.stds   = np.full((self.K, self.num_params), self.sigma_init, dtype=np.float32)
+        self.weights = np.full(self.K, 1.0 / self.K, dtype=np.float32)
+
+        # population buffers
+        self.solutions = None
+
+        # tracking bests
+        self.curr_best_reward = -np.inf
+        self.curr_best_mu     = self.means[0].copy()
+        self.best_reward      = -np.inf
+        self.best_mu          = self.means[0].copy()
+
+    # ---- helpers -------------------------------------------------------------
+
+    def _sample_component(self, size):
+        """Sample component indices according to mixture weights."""
+        return self.rng.choice(self.K, size=size, p=self.weights)
+
+    def _sample_diag_gauss(self, mean, std):
+        eps = self.rng.randn(*mean.shape).astype(np.float32)
+        return mean + eps * std
+
+    def _fit_mixture_from_elites(self, elites):
+        """Hard-EM (k-means style) on elites -> update (means, stds, weights).
+
+        elites: (E, D)
+        """
+        E, D = elites.shape
+        K = min(self.K, max(1, E))  # cannot have more comps than elites
+
+        # --- init cluster centers: k-means++ style light init ---
+        centers = np.empty((K, D), dtype=np.float32)
+        # first center
+        centers[0] = elites[self.rng.randint(E)]
+        # subsequent
+        d2 = np.sum((elites - centers[0])**2, axis=1)
+        for k in range(1, K):
+            probs = d2 / (d2.sum() + 1e-9)
+            idx = np.searchsorted(np.cumsum(probs), self.rng.rand())
+            centers[k] = elites[min(idx, E-1)]
+            # update distances
+            d2 = np.minimum(d2, np.sum((elites - centers[k])**2, axis=1))
+
+        # --- Lloyd iterations ---
+        assign = np.zeros(E, dtype=np.int32)
+        for _ in range(self.kmeans_iters):
+            # assign
+            # (E,K) distances
+            dists = np.stack([np.sum((elites - c)**2, axis=1) for c in centers], axis=1)
+            assign = np.argmin(dists, axis=1)
+
+            # update centers
+            for k in range(K):
+                mask = (assign == k)
+                if np.any(mask):
+                    centers[k] = elites[mask].mean(axis=0)
+                else:
+                    # re-seed empty cluster to a random elite
+                    centers[k] = elites[self.rng.randint(E)]
+
+        # final assignment
+        dists = np.stack([np.sum((elites - c)**2, axis=1) for c in centers], axis=1)
+        assign = np.argmin(dists, axis=1)
+
+        # --- compute means, stds (diag), weights ---
+        means  = np.zeros((K, D), dtype=np.float32)
+        stds   = np.zeros((K, D), dtype=np.float32)
+        weights = np.zeros(K, dtype=np.float32)
+
+        for k in range(K):
+            mask = (assign == k)
+            cnt = max(1, int(mask.sum()))
+            weights[k] = cnt / float(E)
+            sel = elites[mask]
+            means[k] = sel.mean(axis=0)
+            # diag var
+            var = sel.var(axis=0) + (self.sigma_min ** 2)  # variance floor
+            stds[k] = np.sqrt(var)
+
+        # optional global sigma decay
+        if self.sigma_decay != 1.0:
+            stds = np.maximum(stds * self.sigma_decay, self.sigma_min)
+
+        # normalize weights
+        s = weights.sum()
+        if s > 0:
+            weights /= s
+        else:
+            weights[:] = 1.0 / K
+
+        # overwrite internal K if it shrank
+        self.K = K
+        self.means = means
+        self.stds = np.maximum(stds, self.sigma_min)
+        self.weights = weights
+
+    # ---- public API (mirrors other solvers) ---------------------------------
+
+    def rms_stdev(self):
+        # mixture-averaged rms std
+        return float(np.sqrt(np.mean((self.stds ** 2))))
+
+    def ask(self):
+        """returns a list of parameters: shape (popsize, num_params)"""
+        comps = self._sample_component(self.popsize)
+        sols = np.empty((self.popsize, self.num_params), dtype=np.float32)
+        for i in range(self.popsize):
+            k = comps[i]
+            sols[i] = self._sample_diag_gauss(self.means[k], self.stds[k])
+        self.solutions = sols
+        return sols
+
+    def tell(self, reward_table_result):
+        """Update mixture from rewards of the sampled population."""
+        assert (len(reward_table_result) == self.popsize), "Inconsistent reward_table size reported."
+
+        reward = np.asarray(reward_table_result, dtype=np.float32)
+        sols   = self.solutions
+
+        # optional weight decay (same convention as other solvers)
+        if self.weight_decay > 0:
+            reg_term = compute_weight_decay(self.weight_decay, sols, reg=self.reg)
+            reward = reward + reg_term.astype(np.float32)
+
+        # elites
+        elite_count = max(1, int(np.ceil(self.elite_ratio * self.popsize)))
+        elite_idx   = np.argsort(reward)[::-1][:elite_count]
+        elites      = sols[elite_idx]
+
+        # track current/historical best
+        self.curr_best_reward = float(reward[elite_idx[0]])
+        self.curr_best_mu     = elites[0].copy()
+        if self.curr_best_reward > self.best_reward:
+            self.best_reward = self.curr_best_reward
+            self.best_mu     = self.curr_best_mu.copy()
+
+        # fit mixture to elites
+        self._fit_mixture_from_elites(elites)
+
+    def current_param(self):
+        """Return the mean of the highest-weight component (good candidate)."""
+        k = int(np.argmax(self.weights))
+        return self.means[k]
+
+    def set_mu(self, mu):
+        """Set all component means to a given vector (rarely needed; API parity)."""
+        mu = np.asarray(mu, dtype=np.float32).reshape(1, -1)
+        self.means = np.repeat(mu, self.K, axis=0)
+
+    def best_param(self):
+        """Return best evaluated solution so far."""
+        return self.best_mu
+
+    def flush(self, solutions):
+        """Replace current population buffer (API parity with other solvers)."""
+        self.solutions = np.asarray(solutions, dtype=np.float32)
+
+    def result(self):
+        """Return (best_params, best_reward, curr_best_reward, rms_sigma)."""
+        return (self.best_mu, self.best_reward, self.curr_best_reward, self.rms_stdev())

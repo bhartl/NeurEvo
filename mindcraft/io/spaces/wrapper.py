@@ -25,8 +25,8 @@ def space_clip(value: (float, int, np.ndarray), space_obj: (Box, Discrete, tuple
         else:
             raise NotImplementedError(type(space_obj))
 
-        v_min = torch.tensor(v_min, device=value.device)
-        v_max = torch.tensor(v_max, device=value.device)
+        v_min = torch.tensor(v_min, device=value.device, dtype=value.dtype)
+        v_max = torch.tensor(v_max, device=value.device, dtype=value.dtype)
         return torch.max(torch.min(value, v_max), v_min)
 
     if isinstance(space_obj, Box):
