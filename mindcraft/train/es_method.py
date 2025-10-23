@@ -1,4 +1,3 @@
-import mpi4py.MPI
 import torch
 from mindcraft.train import Compose
 from mindcraft import World
@@ -11,6 +10,7 @@ import h5py
 import ast
 import copy
 from mindcraft.torch.util import tensor_to_numpy
+from mindcraft.util import mpi  # mpi helper functions with graceful fallback if mpi4py not available
 
 
 class EvolutionaryStrategy(Compose):
@@ -35,11 +35,10 @@ class EvolutionaryStrategy(Compose):
 
     LOG_FOOS = None
 
-    from mpi4py import MPI
-    comm = MPI.COMM_WORLD
-    rank = comm.Get_rank()
-    size = comm.Get_size()
-    is_root = (rank == 0)
+    comm = mpi.comm
+    rank = mpi.rank
+    size = mpi.size
+    is_root = mpi.is_root
 
     @classmethod
     def world_bcast(cls, value, root=0):
@@ -62,7 +61,7 @@ class EvolutionaryStrategy(Compose):
                  opts: Optional[Union[dict, str]] = None,
                  dump_models: bool = False,
                  dump_interval: Optional[int] = None,
-                 comm: Optional[mpi4py.MPI.Comm] = None,
+                 comm: Optional["MPI.Comm"] = None,
                  async_workload: bool = False,
                  diversity_metric: Optional[str] = "cdist",
                  **kwargs):
