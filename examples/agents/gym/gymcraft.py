@@ -10,9 +10,9 @@ Implements the following methods:
 
 :examples:
 
-Execute pretrained agent:
+Execute pretrained agent (from project root):
 
-```python examples/agents/gym/gymcraft rollout --task classic_control/cart_pole --conf feed_forward ```
+```python examples/agents/gym/gymcraft.py rollout --task classic_control/cart_pole --conf feed_forward ```
 
 Where `--task` specifies the directory of the gym environment,
 and `--conf` specifies the specific folder within the `--task/config/--conf` directory with all necessary definitions,
@@ -24,9 +24,9 @@ i.e.:
   - The `pretrained_world.yml` file for retraining, connecting the former solution `evolved-agent.yml` and `env.yml` config files,
   - And a `rollout.yml`, which is used to deploy the `evolved-agent.yml` in its `env.yml` with graphical output.
 
-Train [Fresh] Agent on 16 cores via MPI on Ubuntu with an ES algorithm:
+Train [Retrain] Agent on 16 cores via MPI on Ubuntu with an ES algorithm:
 
-```mpirun -n 16 python examples/agents/gym/gymcraft.py train --task classic_control/cart_pole --conf feed_forward -s 96 -g 100 --checkpoint-interval 10 [--new-model]```
+```mpirun -n 16 python examples/agents/gym/gymcraft.py train --task classic_control/cart_pole --conf feed_forward -s 96 -g 100 --checkpoint-interval 10 [--retrain]```
 
 (c) B. Hartl 2021
 """
@@ -91,7 +91,7 @@ def train(task="classic_control/cart_pole",
           conf='feed_forward',
           file_name="evolved-agent.yml",
           prefix="examples/agents/gym",
-          new_model=False,
+          retrain=False,
           size=16,
           generations=30,
           aggregation='mean',
@@ -121,7 +121,7 @@ def train(task="classic_control/cart_pole",
     if prefix not in ("", None):
         task = merge_path(task, prefix=prefix)
 
-    if new_model:
+    if not retrain:
         world_repr = get_fresh_world_yml(config=conf, prefix=task)
 
     else:
@@ -135,7 +135,7 @@ def train(task="classic_control/cart_pole",
                  generations=generations,
                  aggregation=aggregation,
                  verbose=verbose,
-                 new_model=new_model,
+                 new_model=not retrain,
                  path=model_path,
                  file_name=file_name,
                  checkpoint_interval=checkpoint_interval,

@@ -44,7 +44,7 @@ dependencies = [
     "torchvision",
 
     # RL
-    "gym",
+    "gymnasium",  # "gym",
     "box2d >= 2.3.2",
     "box2d-py >= 2.3.8",
     "pygame",
@@ -67,7 +67,6 @@ dependencies = [
 [project.optional-dependencies]
 acc = [
     "mpi4py >= 3.1.4",
-    "workload@git+https://github.com/bhartl/async-workload-handler#egg=main",
     "swig",
 ]
 examples = [

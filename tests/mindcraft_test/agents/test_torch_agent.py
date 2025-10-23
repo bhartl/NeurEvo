@@ -2,7 +2,7 @@ from unittest import TestCase
 
 
 class TestTorchAgent(TestCase):
-    def test_rollout_gym(self, verbose=False, render=False, gym_id='LunarLander-v2', policy_module='Recurrent', ):
+    def test_rollout_gym(self, verbose=False, render=False, gym_id='LunarLander-v3', policy_module='Recurrent', ):
         """ Rollout a DirectAgent instance on any gym_id
           - Note that the Agent is randomly initialized
 

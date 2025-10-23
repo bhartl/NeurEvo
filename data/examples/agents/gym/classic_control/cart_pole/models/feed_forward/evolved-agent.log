@@ -1,0 +1,40 @@
+ES: initializing
+loading es-util solver `CMAES`
+solver options: {}
+ES: starting CMAES optimizer on 8 cores
+population-size: 16
+with num. parameters: 57
+Iteration 1/30 -> Best Reward: +28.000, Current Reward: +28.000, Avg(Std)-Reward: +12.713(5.743), Diversity: 10.736(0.985), Duration: 4.27 secs.
+Iteration 2/30 -> Best Reward: +47.900, Current Reward: +47.900, Avg(Std)-Reward: +15.913(10.427), Diversity: 9.945(0.926), Duration: 0.53 secs.
+Iteration 3/30 -> Best Reward: +47.900, Current Reward: +35.500, Avg(Std)-Reward: +14.494(7.469), Diversity: 9.885(1.031), Duration: 0.51 secs.
+Iteration 4/30 -> Best Reward: +47.900, Current Reward: +45.000, Avg(Std)-Reward: +16.238(11.805), Diversity: 9.644(0.815), Duration: 0.69 secs.
+Iteration 5/30 -> Best Reward: +137.800, Current Reward: +137.800, Avg(Std)-Reward: +29.862(31.199), Diversity: 9.507(0.826), Duration: 1.49 secs.
+Iteration 6/30 -> Best Reward: +137.800, Current Reward: +65.900, Avg(Std)-Reward: +23.644(16.581), Diversity: 9.107(0.784), Duration: 0.74 secs.
+Iteration 7/30 -> Best Reward: +137.800, Current Reward: +100.800, Avg(Std)-Reward: +28.575(22.684), Diversity: 9.314(0.753), Duration: 1.01 secs.
+Iteration 8/30 -> Best Reward: +152.000, Current Reward: +152.000, Avg(Std)-Reward: +44.081(37.923), Diversity: 9.131(0.943), Duration: 1.58 secs.
+Iteration 9/30 -> Best Reward: +152.000, Current Reward: +101.400, Avg(Std)-Reward: +27.650(21.847), Diversity: 9.093(0.886), Duration: 0.88 secs.
+Iteration 10/30 -> Best Reward: +262.000, Current Reward: +262.000, Avg(Std)-Reward: +42.812(57.836), Diversity: 8.834(0.813), Duration: 1.63 secs.
+Iteration 11/30 -> Best Reward: +262.000, Current Reward: +179.700, Avg(Std)-Reward: +46.219(41.312), Diversity: 8.796(0.725), Duration: 1.37 secs.
+Iteration 12/30 -> Best Reward: +262.000, Current Reward: +101.000, Avg(Std)-Reward: +52.500(28.245), Diversity: 9.080(0.803), Duration: 2.04 secs.
+Iteration 13/30 -> Best Reward: +262.000, Current Reward: +210.400, Avg(Std)-Reward: +56.375(46.591), Diversity: 9.228(0.959), Duration: 2.63 secs.
+Iteration 14/30 -> Best Reward: +262.000, Current Reward: +106.900, Avg(Std)-Reward: +49.688(26.272), Diversity: 9.013(0.886), Duration: 1.11 secs.
+Iteration 15/30 -> Best Reward: +262.000, Current Reward: +252.500, Avg(Std)-Reward: +66.125(60.929), Diversity: 9.086(0.851), Duration: 1.75 secs.
+Iteration 16/30 -> Best Reward: +262.000, Current Reward: +237.000, Avg(Std)-Reward: +81.150(60.629), Diversity: 9.457(0.829), Duration: 2.17 secs.
+Iteration 17/30 -> Best Reward: +262.000, Current Reward: +209.700, Avg(Std)-Reward: +61.169(56.069), Diversity: 9.480(0.783), Duration: 2.31 secs.
+Iteration 18/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +82.781(116.195), Diversity: 9.248(1.044), Duration: 4.55 secs.
+Iteration 19/30 -> Best Reward: +500.000, Current Reward: +397.400, Avg(Std)-Reward: +89.387(106.960), Diversity: 8.857(0.978), Duration: 3.02 secs.
+Iteration 20/30 -> Best Reward: +500.000, Current Reward: +365.900, Avg(Std)-Reward: +101.075(109.353), Diversity: 8.913(0.806), Duration: 2.41 secs.
+Iteration 21/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +113.587(151.139), Diversity: 8.753(0.753), Duration: 5.60 secs.
+Iteration 22/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +128.712(129.234), Diversity: 8.529(0.706), Duration: 7.67 secs.
+Iteration 23/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +188.894(189.423), Diversity: 8.431(0.697), Duration: 7.15 secs.
+Iteration 24/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +237.238(205.932), Diversity: 8.452(0.711), Duration: 5.63 secs.
+Iteration 25/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +257.050(187.668), Diversity: 8.251(0.748), Duration: 6.34 secs.
+Iteration 26/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +304.169(185.597), Diversity: 8.146(0.700), Duration: 7.32 secs.
+Iteration 27/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +297.800(174.042), Diversity: 8.246(0.948), Duration: 8.66 secs.
+Iteration 28/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +373.238(165.487), Diversity: 8.251(0.861), Duration: 6.67 secs.
+Iteration 29/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +409.750(155.801), Diversity: 7.881(0.720), Duration: 8.56 secs.
+Iteration 30/30 -> Best Reward: +500.000, Current Reward: +500.000, Avg(Std)-Reward: +352.613(165.415), Diversity: 7.843(0.674), Duration: 8.45 secs.
+ES: local optimum discovered by solver, with score: 499.97132869444687.
+ES: logger-history @ `data/examples/agents/gym/classic_control/cart_pole/models/feed_forward/evolved-agent-ckpt.h5`.
+saving agent repr to: `data/examples/agents/gym/classic_control/cart_pole/models/feed_forward/evolved-agent.yml`.
+done

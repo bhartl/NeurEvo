@@ -1,4 +1,8 @@
-import gym
+try:
+    import gymnasium as gym
+except ModuleNotFoundError:
+    import gym
+
 try:
     import pybullet_envs
 except AttributeError:  # XServer issues

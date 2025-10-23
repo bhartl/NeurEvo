@@ -1,5 +1,10 @@
 world:
-  env: examples/agents/gym/classic_control/cart_pole/config/feed_forward/env.yml
+  env:
+    cls: GymWrapper
+    locate: mindcraft.envs.gym_wrapper
+    gym_id: CartPole-v1  # see https://gymnasium.farama.org/environments/classic_control/
+    gym_kwargs:
+      render_mode: human
   agent: data/examples/agents/gym/classic_control/cart_pole/models/feed_forward/evolved-agent.yml
   n_episodes: 4
   load_steps: 0

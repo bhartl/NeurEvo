@@ -4,7 +4,10 @@ from numpy import *
 
 class BoxTest(TestCase):
     def test_gym_repr_1d(self, verbose=False):
-        from gym.spaces import Box as GymBox
+        try:
+            from gymnasium.spaces import Box as GymBox
+        except ImportError:
+            from gym.spaces import Box as GymBox
         from mindcraft.io.spaces import Box as MCBox
         import numpy as np
 
@@ -31,7 +34,10 @@ class BoxTest(TestCase):
 
     def test_gym_repr_2d(self, verbose=False):
         import numpy as np
-        from gym.spaces import Box as GymBox
+        try:
+            from gymnasium.spaces import Box as GymBox
+        except ImportError:
+            from gym.spaces import Box as GymBox
         from mindcraft.io.spaces import Box as MCBox
         # same low/high grid
         b = GymBox(-1, 1, shape=(2,))

@@ -307,7 +307,7 @@ class SensoryEmbedding(Embedding):
             x = self.sensor(x)
             if is_sequence:
                 x = x.reshape(*shape, -1)
-                if not self.projection.flatten:
+                if getattr(self.projection, "flatten", False):
                     x = x.transpose(2, 3).transpose(1, 2)  # (BS, FEATURES, X, Y)
         return x
 

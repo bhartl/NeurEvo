@@ -1,5 +1,8 @@
 import numpy as np
-from gym import spaces
+try:
+    from gymnasium import spaces
+except ImportError:
+    from gym import spaces
 
 
 class Box(spaces.Box):

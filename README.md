@@ -155,7 +155,7 @@ python -m unittest discover -s $PROJECT_ROOT/tests
 ### [`CartPole` example](./examples/examples/agents/gym/classic_control/cart_pole/feed_forward) with `feed_forward` policy
 For (multicore) **training**, run
 ```bash
-mpirun -np 4 python examples/agents/gym/gymcraft.py train --task classic_control/cart_pole --conf feed_forward --new-model
+mpirun -np 4 python examples/agents/gym/gymcraft.py train --task classic_control/cart_pole --conf feed_forward
 ```
 
 and check the training **progress** with

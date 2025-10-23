@@ -1,7 +1,10 @@
 import argh
 from pydoc import locate
 import numpy as np
-from gym import Env as GymEnv
+try:
+    from gymnasium import Env as GymEnv
+except ImportError:
+    from gym import Env as GymEnv
 from mindcraft.io import Repr
 from mindcraft.io.spaces import Space
 from typing import Tuple, Union

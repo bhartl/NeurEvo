@@ -4,7 +4,7 @@ default_action: [0., 0.]
 clip: False
 policy_module:
   cls: Recurrent
-  layer_type: LSTM
+  layer_type: GRU
   input_size: 8
   hidden_size: 8
   num_layers: 2

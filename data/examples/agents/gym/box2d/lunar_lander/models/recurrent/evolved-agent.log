@@ -1,0 +1,110 @@
+ES: initializing
+loading es-util solver `CMAES`
+solver options: {}
+ES: starting CMAES optimizer on 8 cores
+population-size: 80
+with num. parameters: 882
+Iteration 1/100 -> Best Reward: -152.525, Current Reward: -152.525, Avg(Std)-Reward: -712.583(300.779), Diversity: 41.945(0.984), Duration: 9.22 secs.
+Iteration 2/100 -> Best Reward: -144.714, Current Reward: -144.714, Avg(Std)-Reward: -641.323(233.974), Diversity: 41.290(1.009), Duration: 4.28 secs.
+Iteration 3/100 -> Best Reward: -144.714, Current Reward: -197.231, Avg(Std)-Reward: -644.461(352.179), Diversity: 40.448(0.970), Duration: 4.73 secs.
+Iteration 4/100 -> Best Reward: -122.841, Current Reward: -122.841, Avg(Std)-Reward: -578.150(271.780), Diversity: 39.936(0.938), Duration: 5.20 secs.
+Iteration 5/100 -> Best Reward: -91.513, Current Reward: -91.513, Avg(Std)-Reward: -535.838(245.261), Diversity: 39.256(0.932), Duration: 4.22 secs.
+Iteration 6/100 -> Best Reward: -91.513, Current Reward: -178.061, Avg(Std)-Reward: -504.420(195.716), Diversity: 38.935(1.008), Duration: 4.40 secs.
+Iteration 7/100 -> Best Reward: -91.513, Current Reward: -116.923, Avg(Std)-Reward: -486.727(246.387), Diversity: 38.261(0.826), Duration: 5.24 secs.
+Iteration 8/100 -> Best Reward: -91.513, Current Reward: -136.381, Avg(Std)-Reward: -491.624(215.519), Diversity: 37.940(0.849), Duration: 4.96 secs.
+Iteration 9/100 -> Best Reward: -91.513, Current Reward: -117.880, Avg(Std)-Reward: -439.579(204.609), Diversity: 37.525(0.854), Duration: 4.05 secs.
+Iteration 10/100 -> Best Reward: -91.513, Current Reward: -135.465, Avg(Std)-Reward: -435.007(189.629), Diversity: 37.048(0.930), Duration: 5.30 secs.
+Iteration 11/100 -> Best Reward: -4.713, Current Reward: -4.713, Avg(Std)-Reward: -444.765(200.325), Diversity: 36.854(0.916), Duration: 4.44 secs.
+Iteration 12/100 -> Best Reward: -4.713, Current Reward: -145.544, Avg(Std)-Reward: -435.917(196.643), Diversity: 36.642(0.814), Duration: 5.35 secs.
+Iteration 13/100 -> Best Reward: -4.713, Current Reward: -100.196, Avg(Std)-Reward: -415.714(193.254), Diversity: 36.221(0.939), Duration: 8.18 secs.
+Iteration 14/100 -> Best Reward: -4.713, Current Reward: -97.344, Avg(Std)-Reward: -403.215(166.915), Diversity: 36.011(0.834), Duration: 5.45 secs.
+Iteration 15/100 -> Best Reward: -4.713, Current Reward: -67.971, Avg(Std)-Reward: -434.518(210.834), Diversity: 35.914(0.866), Duration: 5.48 secs.
+Iteration 16/100 -> Best Reward: -4.713, Current Reward: -117.300, Avg(Std)-Reward: -428.231(264.693), Diversity: 35.606(0.840), Duration: 6.39 secs.
+Iteration 17/100 -> Best Reward: -4.713, Current Reward: -140.434, Avg(Std)-Reward: -386.949(162.698), Diversity: 35.353(0.858), Duration: 5.81 secs.
+Iteration 18/100 -> Best Reward: -4.713, Current Reward: -112.508, Avg(Std)-Reward: -369.767(172.925), Diversity: 35.290(0.863), Duration: 5.33 secs.
+Iteration 19/100 -> Best Reward: -4.713, Current Reward: -104.166, Avg(Std)-Reward: -329.959(147.133), Diversity: 35.069(0.804), Duration: 7.28 secs.
+Iteration 20/100 -> Best Reward: -4.713, Current Reward: -73.098, Avg(Std)-Reward: -338.934(172.495), Diversity: 34.778(0.841), Duration: 4.38 secs.
+Iteration 21/100 -> Best Reward: -4.713, Current Reward: -108.191, Avg(Std)-Reward: -307.060(164.647), Diversity: 34.560(0.843), Duration: 4.95 secs.
+Iteration 22/100 -> Best Reward: -4.713, Current Reward: -109.730, Avg(Std)-Reward: -273.483(132.614), Diversity: 34.424(0.777), Duration: 6.01 secs.
+Iteration 23/100 -> Best Reward: -4.713, Current Reward: -81.701, Avg(Std)-Reward: -261.916(146.923), Diversity: 34.100(0.815), Duration: 4.53 secs.
+Iteration 24/100 -> Best Reward: -4.713, Current Reward: -91.300, Avg(Std)-Reward: -252.626(138.821), Diversity: 34.272(0.837), Duration: 4.03 secs.
+Iteration 25/100 -> Best Reward: -4.713, Current Reward: -104.794, Avg(Std)-Reward: -229.308(131.630), Diversity: 34.275(0.782), Duration: 5.06 secs.
+Iteration 26/100 -> Best Reward: -4.713, Current Reward: -96.458, Avg(Std)-Reward: -240.206(125.470), Diversity: 34.038(0.779), Duration: 4.46 secs.
+Iteration 27/100 -> Best Reward: -4.713, Current Reward: -44.046, Avg(Std)-Reward: -207.549(112.524), Diversity: 33.885(0.729), Duration: 4.11 secs.
+Iteration 28/100 -> Best Reward: -4.713, Current Reward: -88.516, Avg(Std)-Reward: -200.225(132.450), Diversity: 33.856(0.810), Duration: 4.77 secs.
+Iteration 29/100 -> Best Reward: -4.713, Current Reward: -48.046, Avg(Std)-Reward: -173.610(100.323), Diversity: 33.759(0.775), Duration: 5.33 secs.
+Iteration 30/100 -> Best Reward: -4.713, Current Reward: -93.454, Avg(Std)-Reward: -212.646(128.062), Diversity: 33.699(0.804), Duration: 4.52 secs.
+Iteration 31/100 -> Best Reward: -4.713, Current Reward: -83.596, Avg(Std)-Reward: -176.319(96.792), Diversity: 33.484(0.824), Duration: 6.84 secs.
+Iteration 32/100 -> Best Reward: -4.713, Current Reward: -60.702, Avg(Std)-Reward: -206.416(184.418), Diversity: 33.405(0.819), Duration: 4.65 secs.
+Iteration 33/100 -> Best Reward: -4.713, Current Reward: -91.348, Avg(Std)-Reward: -167.866(79.858), Diversity: 33.269(0.809), Duration: 4.56 secs.
+Iteration 34/100 -> Best Reward: -4.713, Current Reward: -66.574, Avg(Std)-Reward: -176.910(95.461), Diversity: 33.386(0.784), Duration: 6.97 secs.
+Iteration 35/100 -> Best Reward: -4.713, Current Reward: -68.881, Avg(Std)-Reward: -165.946(199.571), Diversity: 33.295(0.716), Duration: 4.22 secs.
+Iteration 36/100 -> Best Reward: -4.713, Current Reward: -83.827, Avg(Std)-Reward: -151.952(70.284), Diversity: 33.165(0.773), Duration: 5.39 secs.
+Iteration 37/100 -> Best Reward: -4.713, Current Reward: -80.536, Avg(Std)-Reward: -173.752(105.639), Diversity: 33.166(0.753), Duration: 7.43 secs.
+Iteration 38/100 -> Best Reward: -4.713, Current Reward: -105.139, Avg(Std)-Reward: -179.790(135.286), Diversity: 33.082(0.792), Duration: 4.49 secs.
+Iteration 39/100 -> Best Reward: -4.713, Current Reward: -91.798, Avg(Std)-Reward: -175.189(107.369), Diversity: 33.007(0.779), Duration: 4.96 secs.
+Iteration 40/100 -> Best Reward: -4.713, Current Reward: -51.442, Avg(Std)-Reward: -174.019(97.530), Diversity: 33.059(0.766), Duration: 5.79 secs.
+Iteration 41/100 -> Best Reward: -4.713, Current Reward: -83.270, Avg(Std)-Reward: -161.554(76.463), Diversity: 33.115(0.784), Duration: 5.31 secs.
+Iteration 42/100 -> Best Reward: -4.713, Current Reward: -76.298, Avg(Std)-Reward: -187.411(187.164), Diversity: 32.808(0.756), Duration: 4.75 secs.
+Iteration 43/100 -> Best Reward: -4.713, Current Reward: -64.197, Avg(Std)-Reward: -179.616(152.860), Diversity: 32.935(0.800), Duration: 5.99 secs.
+Iteration 44/100 -> Best Reward: -4.713, Current Reward: -67.250, Avg(Std)-Reward: -169.241(100.845), Diversity: 33.026(0.807), Duration: 4.79 secs.
+Iteration 45/100 -> Best Reward: -4.713, Current Reward: -81.445, Avg(Std)-Reward: -176.939(105.197), Diversity: 32.671(0.748), Duration: 5.83 secs.
+Iteration 46/100 -> Best Reward: -4.713, Current Reward: -70.433, Avg(Std)-Reward: -197.228(153.294), Diversity: 32.824(0.775), Duration: 6.20 secs.
+Iteration 47/100 -> Best Reward: +67.549, Current Reward: +67.549, Avg(Std)-Reward: -196.620(143.149), Diversity: 32.806(0.741), Duration: 6.50 secs.
+Iteration 48/100 -> Best Reward: +67.549, Current Reward: +46.396, Avg(Std)-Reward: -198.031(146.108), Diversity: 32.680(0.814), Duration: 6.17 secs.
+Iteration 49/100 -> Best Reward: +67.549, Current Reward: -52.393, Avg(Std)-Reward: -179.418(148.902), Diversity: 32.669(0.818), Duration: 6.60 secs.
+Iteration 50/100 -> Best Reward: +67.549, Current Reward: +43.728, Avg(Std)-Reward: -162.073(106.516), Diversity: 32.671(0.698), Duration: 5.73 secs.
+Iteration 51/100 -> Best Reward: +67.549, Current Reward: +24.490, Avg(Std)-Reward: -217.359(230.584), Diversity: 32.561(0.759), Duration: 5.93 secs.
+Iteration 52/100 -> Best Reward: +67.549, Current Reward: +0.052, Avg(Std)-Reward: -195.861(188.874), Diversity: 32.675(0.756), Duration: 11.27 secs.
+Iteration 53/100 -> Best Reward: +67.549, Current Reward: -12.249, Avg(Std)-Reward: -139.664(125.463), Diversity: 32.598(0.811), Duration: 5.55 secs.
+Iteration 54/100 -> Best Reward: +67.549, Current Reward: +43.324, Avg(Std)-Reward: -163.775(161.174), Diversity: 32.599(0.785), Duration: 10.25 secs.
+Iteration 55/100 -> Best Reward: +67.549, Current Reward: +18.470, Avg(Std)-Reward: -187.612(173.880), Diversity: 32.711(0.864), Duration: 6.40 secs.
+Iteration 56/100 -> Best Reward: +94.611, Current Reward: +94.611, Avg(Std)-Reward: -115.839(110.819), Diversity: 32.762(0.790), Duration: 7.32 secs.
+Iteration 57/100 -> Best Reward: +106.290, Current Reward: +106.290, Avg(Std)-Reward: -96.310(96.240), Diversity: 32.782(0.766), Duration: 7.79 secs.
+Iteration 58/100 -> Best Reward: +106.290, Current Reward: +83.715, Avg(Std)-Reward: -129.266(181.102), Diversity: 32.699(0.779), Duration: 13.10 secs.
+Iteration 59/100 -> Best Reward: +106.290, Current Reward: +100.513, Avg(Std)-Reward: -111.402(147.790), Diversity: 32.767(0.763), Duration: 10.52 secs.
+Iteration 60/100 -> Best Reward: +193.158, Current Reward: +193.158, Avg(Std)-Reward: -115.011(412.978), Diversity: 32.612(0.799), Duration: 12.08 secs.
+Iteration 61/100 -> Best Reward: +209.631, Current Reward: +209.631, Avg(Std)-Reward: -84.302(180.637), Diversity: 32.821(0.753), Duration: 9.09 secs.
+Iteration 62/100 -> Best Reward: +209.631, Current Reward: +136.483, Avg(Std)-Reward: -107.495(301.882), Diversity: 32.791(0.768), Duration: 13.93 secs.
+Iteration 63/100 -> Best Reward: +209.631, Current Reward: +167.649, Avg(Std)-Reward: -83.593(155.822), Diversity: 32.820(0.742), Duration: 12.38 secs.
+Iteration 64/100 -> Best Reward: +209.631, Current Reward: +187.931, Avg(Std)-Reward: -145.861(290.216), Diversity: 32.976(0.826), Duration: 14.30 secs.
+Iteration 65/100 -> Best Reward: +209.631, Current Reward: +134.342, Avg(Std)-Reward: -67.463(102.609), Diversity: 32.990(0.777), Duration: 16.98 secs.
+Iteration 66/100 -> Best Reward: +209.631, Current Reward: +121.102, Avg(Std)-Reward: -178.160(532.889), Diversity: 32.915(0.802), Duration: 14.19 secs.
+Iteration 67/100 -> Best Reward: +228.519, Current Reward: +228.519, Avg(Std)-Reward: -93.273(175.064), Diversity: 33.039(0.792), Duration: 25.59 secs.
+Iteration 68/100 -> Best Reward: +228.519, Current Reward: +180.523, Avg(Std)-Reward: -72.894(134.318), Diversity: 32.979(0.735), Duration: 14.42 secs.
+Iteration 69/100 -> Best Reward: +228.519, Current Reward: +151.873, Avg(Std)-Reward: -109.481(320.741), Diversity: 32.860(0.773), Duration: 20.87 secs.
+Iteration 70/100 -> Best Reward: +228.519, Current Reward: +168.201, Avg(Std)-Reward: -65.823(110.181), Diversity: 33.048(0.795), Duration: 18.72 secs.
+Iteration 71/100 -> Best Reward: +228.519, Current Reward: +177.908, Avg(Std)-Reward: -68.857(167.735), Diversity: 32.985(0.707), Duration: 14.84 secs.
+Iteration 72/100 -> Best Reward: +228.519, Current Reward: +227.327, Avg(Std)-Reward: -51.885(171.602), Diversity: 33.070(0.776), Duration: 15.93 secs.
+Iteration 73/100 -> Best Reward: +228.519, Current Reward: +173.129, Avg(Std)-Reward: -56.411(215.075), Diversity: 33.108(0.797), Duration: 26.62 secs.
+Iteration 74/100 -> Best Reward: +228.519, Current Reward: +186.393, Avg(Std)-Reward: -48.011(211.515), Diversity: 33.008(0.750), Duration: 22.65 secs.
+Iteration 75/100 -> Best Reward: +228.519, Current Reward: +181.220, Avg(Std)-Reward: -72.612(205.958), Diversity: 33.122(0.768), Duration: 25.46 secs.
+Iteration 76/100 -> Best Reward: +228.519, Current Reward: +215.385, Avg(Std)-Reward: -29.609(146.953), Diversity: 33.097(0.782), Duration: 18.81 secs.
+Iteration 77/100 -> Best Reward: +228.519, Current Reward: +187.471, Avg(Std)-Reward: -16.588(157.276), Diversity: 33.130(0.775), Duration: 19.53 secs.
+Iteration 78/100 -> Best Reward: +230.585, Current Reward: +230.585, Avg(Std)-Reward: -3.753(177.825), Diversity: 33.142(0.825), Duration: 24.90 secs.
+Iteration 79/100 -> Best Reward: +230.585, Current Reward: +228.986, Avg(Std)-Reward: -11.714(198.022), Diversity: 32.957(0.754), Duration: 29.79 secs.
+Iteration 80/100 -> Best Reward: +230.585, Current Reward: +217.336, Avg(Std)-Reward: -30.516(253.002), Diversity: 33.136(0.749), Duration: 24.05 secs.
+Iteration 81/100 -> Best Reward: +233.786, Current Reward: +233.786, Avg(Std)-Reward: -29.413(307.531), Diversity: 33.245(0.821), Duration: 23.47 secs.
+Iteration 82/100 -> Best Reward: +248.891, Current Reward: +248.891, Avg(Std)-Reward: +46.523(112.615), Diversity: 33.142(0.812), Duration: 26.75 secs.
+Iteration 83/100 -> Best Reward: +248.891, Current Reward: +233.884, Avg(Std)-Reward: +21.530(134.000), Diversity: 33.152(0.837), Duration: 21.62 secs.
+Iteration 84/100 -> Best Reward: +252.521, Current Reward: +252.521, Avg(Std)-Reward: -7.603(300.083), Diversity: 33.255(0.759), Duration: 20.73 secs.
+Iteration 85/100 -> Best Reward: +252.521, Current Reward: +237.075, Avg(Std)-Reward: +25.135(139.312), Diversity: 33.268(0.763), Duration: 29.45 secs.
+Iteration 86/100 -> Best Reward: +252.521, Current Reward: +225.251, Avg(Std)-Reward: +13.326(188.623), Diversity: 33.404(0.786), Duration: 21.43 secs.
+Iteration 87/100 -> Best Reward: +252.521, Current Reward: +235.033, Avg(Std)-Reward: +43.456(141.919), Diversity: 33.374(0.786), Duration: 24.18 secs.
+Iteration 88/100 -> Best Reward: +252.521, Current Reward: +227.575, Avg(Std)-Reward: +23.870(185.533), Diversity: 33.468(0.804), Duration: 19.05 secs.
+Iteration 89/100 -> Best Reward: +252.521, Current Reward: +225.333, Avg(Std)-Reward: +35.609(142.815), Diversity: 33.270(0.725), Duration: 21.98 secs.
+Iteration 90/100 -> Best Reward: +252.521, Current Reward: +245.789, Avg(Std)-Reward: +6.554(177.110), Diversity: 33.410(0.783), Duration: 35.32 secs.
+Iteration 91/100 -> Best Reward: +252.521, Current Reward: +228.994, Avg(Std)-Reward: +37.114(116.467), Diversity: 33.528(0.784), Duration: 23.72 secs.
+Iteration 92/100 -> Best Reward: +252.521, Current Reward: +222.824, Avg(Std)-Reward: +53.814(146.251), Diversity: 33.503(0.809), Duration: 25.04 secs.
+Iteration 93/100 -> Best Reward: +252.521, Current Reward: +214.315, Avg(Std)-Reward: +17.116(126.938), Diversity: 33.563(0.793), Duration: 28.68 secs.
+Iteration 94/100 -> Best Reward: +258.552, Current Reward: +258.552, Avg(Std)-Reward: +29.808(137.397), Diversity: 33.554(0.825), Duration: 22.80 secs.
+Iteration 95/100 -> Best Reward: +258.552, Current Reward: +257.490, Avg(Std)-Reward: +3.663(197.875), Diversity: 33.730(0.845), Duration: 23.91 secs.
+Iteration 96/100 -> Best Reward: +258.552, Current Reward: +231.428, Avg(Std)-Reward: +35.735(168.557), Diversity: 33.728(0.791), Duration: 31.95 secs.
+Iteration 97/100 -> Best Reward: +258.552, Current Reward: +236.555, Avg(Std)-Reward: +25.967(250.241), Diversity: 33.878(0.760), Duration: 35.69 secs.
+Iteration 98/100 -> Best Reward: +258.552, Current Reward: +210.573, Avg(Std)-Reward: +41.508(131.531), Diversity: 33.869(0.785), Duration: 26.54 secs.
+Iteration 99/100 -> Best Reward: +258.552, Current Reward: +216.376, Avg(Std)-Reward: +63.075(172.088), Diversity: 33.871(0.809), Duration: 25.62 secs.
+Iteration 100/100 -> Best Reward: +258.552, Current Reward: +256.021, Avg(Std)-Reward: +71.090(108.534), Diversity: 34.159(0.760), Duration: 32.40 secs.
+ES: local optimum discovered by solver, with score: 258.5145180187289.
+ES: logger-history @ `data/examples/agents/gym/box2d/lunar_lander/models/recurrent/evolved-agent-ckpt.h5`.
+saving agent repr to: `data/examples/agents/gym/box2d/lunar_lander/models/recurrent/evolved-agent.yml`.
+done

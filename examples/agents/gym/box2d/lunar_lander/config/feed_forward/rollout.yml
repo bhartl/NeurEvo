@@ -1,5 +1,10 @@
 world:
-  env: examples/agents/gym/box2d/lunar_lander/config/feed_forward/env.yml
+  env:
+    cls: GymWrapper
+    locate: mindcraft.envs.gym_wrapper
+    gym_id: "LunarLanderContinuous-v3"
+    gym_kwargs:
+      render_mode: human
   agent: data/examples/agents/gym/box2d/lunar_lander/models/feed_forward/evolved-agent.yml
   n_episodes: 5
   verbose: True
