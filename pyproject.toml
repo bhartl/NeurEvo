@@ -67,7 +67,6 @@ dependencies = [
 [project.optional-dependencies]
 acc = [
     "mpi4py >= 3.1.4",
-    "swig",
 ]
 examples = [
     "jupyter ~= 1.0",
@@ -85,3 +84,9 @@ Homepage = "https://github.com/bhartl/neurevo"
 
 [tool.setuptools]
 py-modules = ["mindcraft"]
+
+# Tell setuptools how to find packages
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mindcraft*"]
+exclude = ["tests*", "examples*"]
