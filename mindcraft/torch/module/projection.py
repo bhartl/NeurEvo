@@ -1,6 +1,10 @@
 from torch.nn import Identity, Linear, Conv2d, Sequential
 from mindcraft.torch.util import get_conv2d_output_size
-from numpy import array_equal, asarray, product, ndarray, stack
+from numpy import array_equal, asarray, ndarray, stack
+try:
+    from numpy import product
+except ImportError:
+    from numpy import prod as product
 from numpy import arange as np_arange
 from typing import Union, Optional
 from mindcraft.torch.activation import get_activation_function

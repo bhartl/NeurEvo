@@ -3,7 +3,11 @@
 (c) B. Hartl 2021
 """
 import torch
-from numpy import ndim, product, ndarray, asarray
+from numpy import ndim, ndarray, asarray
+try:
+    from numpy import product
+except ImportError:
+    from numpy import prod as product
 from torch import Tensor, tensor, no_grad
 from torch import float as torch_float
 from torch import nn
