@@ -1,4 +1,4 @@
-from torch.nn import Sequential, Linear, Dropout, BatchNorm1d
+from torch.nn import Sequential, Linear, Dropout, BatchNorm1d, LayerNorm
 from torch import Tensor
 from mindcraft.torch.module import Patchwork
 from typing import Optional, Union
@@ -9,20 +9,21 @@ from numpy import isscalar
 class FeedForward(Patchwork):
     """ (Multilayer) configurable Sequential PyTorch Module of the `mindcraft` framework
 
-    (c) B. Hartl 2021
+    (c) B. Hartl 2021 @ https://github.com/bhartl/worldmodels, merges `CModel`
     """
 
     REPR_FIELDS = (
-            "input_size",
-            "hidden_size",
-            "output_size",
-            "bias",
-            "batch_norm",
-            "activation",
-            "dropout",
-            *Patchwork.REPR_FIELDS,
-        )
-    
+        "input_size",
+        "hidden_size",
+        "output_size",
+        "bias",
+        "batch_norm",
+        "layer_norm",
+        "activation",
+        "dropout",
+        *Patchwork.REPR_FIELDS,
+    )
+
     def __init__(self,
                  input_size: int,
                  output_size: int,
@@ -30,6 +31,7 @@ class FeedForward(Patchwork):
                  activation: Optional[Union[list, tuple, str]] = None,
                  bias: Optional[Union[list, tuple, bool]] = True,
                  batch_norm: Optional[Union[list, tuple, bool]] = None,
+                 layer_norm: Optional[Union[list, tuple, bool]] = None,
                  dropout: Optional[Union[list, tuple, float]] = None,
                  **patchwork_kwargs,
                  ):
@@ -51,6 +53,10 @@ class FeedForward(Patchwork):
                            the use of BatchNorm layers after the network application but prior to activation and dropout.
                            Note that `None` is a valid option, boolean values will be used as `affine` arguments in the
                            BatchNorm initializations, respectively. Defaults to None.
+        :param layer_norm: Optional boolean flag or list of boolean flag to either globally or layer-wise enable/disable
+                           the use of LayerNorm layers after the network application but prior to activation and dropout.
+                           Note that `None` is a valid option, boolean values will be used as `affine` arguments in the
+                           LayerNorm initializations, respectively. Defaults to None.
         :param dropout: Optional float or list of float values to either globally or layer-wise define the dropout
                         fraction after the network activation, defaults to None.
         :param patchwork_kwargs: Keyword-Args to be forwarded to the `Patchwork` base-class constructor.
@@ -59,9 +65,10 @@ class FeedForward(Patchwork):
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.output_size = output_size
-        self.activation = activation        
+        self.activation = activation
         self.bias = bias
         self.batch_norm = batch_norm
+        self.layer_norm = layer_norm
         self.dropout = dropout
         self.nn = None
 
@@ -70,7 +77,7 @@ class FeedForward(Patchwork):
 
     def to_dict(self):
         dict_repr = Patchwork.to_dict(self)
-        
+
         hidden_size = dict_repr.get('hidden_size', None)
         if hidden_size is not None and not isscalar(hidden_size):
             dict_repr['hidden_size'] = list(hidden_size)
@@ -80,7 +87,7 @@ class FeedForward(Patchwork):
             if attr is not None and not isinstance(attr, str):
                 dict_repr[str_attr] = list(attr)
 
-        for bool_attr in ["batch_norm", "bias"]:
+        for bool_attr in ["batch_norm", "layer_norm", "bias"]:
             attr = dict_repr.get(bool_attr, None)
             if attr is not None and not isinstance(attr, bool):
                 dict_repr[bool_attr] = list(attr)
@@ -123,13 +130,26 @@ class FeedForward(Patchwork):
             batch_norm = [BatchNorm1d(layer_size[i], affine=self.batch_norm) if self.batch_norm is not None else None
                           for i in range(len(layer_size))]
 
+        # determine layer_norm for each layer
+        assert not (self.batch_norm not in (None, False) and self.layer_norm not in (None, False)), "Use either batch_norm or layer_norm, not both."
+
+        layer_norm = self.layer_norm
+        if layer_norm is not None and not isinstance(layer_norm, bool):
+            assert num_layers == len(layer_norm), (f"Got {len(layer_norm)} layer_norm values for {num_layers} layers.")
+            layer_norm = [LayerNorm(layer_size[i], elementwise_affine=a) if a is not None else None
+                          for i, a in enumerate(self.layer_norm)]
+        else:
+            layer_norm = [
+                LayerNorm(layer_size[i], elementwise_affine=self.layer_norm) if self.layer_norm is not None else None
+                for i in range(len(layer_size))]
+
         # determine activation for each layer
         layer_specific_activation = self.activation is not None and not isinstance(self.activation, str)
         if layer_specific_activation:
             num_activations = len(self.activation)
             assert num_layers == num_activations, f"Got {num_activations} activations for {num_layers} layers."
             activation = [get_activation_function(a) for a in self.activation]
-            
+
         else:
             activation = [get_activation_function(self.activation) for _ in range(len(layer_size))]
 
@@ -144,20 +164,25 @@ class FeedForward(Patchwork):
         # compose sequential model
         layers = []
         layer_size = [self.input_size] + layer_size  # add first layer for convenience:
-        for num_in, num_out, b, bn, foo, d in zip(layer_size[:-1],
-                                                  layer_size[1:],
-                                                  bias,
-                                                  batch_norm,
-                                                  activation,
-                                                  dropout):
+        for num_in, num_out, b, bn, ln, foo, d in zip(layer_size[:-1],
+                                                      layer_size[1:],
+                                                      bias,
+                                                      batch_norm,
+                                                      layer_norm,
+                                                      activation,
+                                                      dropout):
             try:
                 layers.append(Linear(in_features=num_in, out_features=num_out, bias=b))
             except TypeError as e:
                 print(e)
                 raise
+
             if bn is not None:  # only add if batch_norm is defined
                 layers.append(bn)
 
+            if ln is not None:
+                layers.append(ln)
+                #
             if foo is not None:  # only add if activation function is not None
                 layers.append(foo)
 
