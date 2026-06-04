@@ -15,7 +15,7 @@ def run(verbose=True, render=True):
                     locate='mindcraft.envs.gym_wrapper',
                     verbose=verbose,
                     gym_kwargs=dict(
-                        render_mode='human',
+                        render_mode='rgb_array',
                     ),
                     )
 
